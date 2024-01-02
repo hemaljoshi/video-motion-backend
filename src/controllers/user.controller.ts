@@ -1,7 +1,7 @@
 import ApiError from "../utils/ApiError";
 import asyncHandler from "../utils/asyncHandler";
 import { User } from "../models/user.model";
-import uploadOnCloudinary from "../utils/cloudinary";
+import { uploadOnCloudinary, deleteFromCloudinary } from "../utils/cloudinary";
 import ApiResponse from "../utils/ApiResponse";
 import jwt from "jsonwebtoken";
 
@@ -228,9 +228,7 @@ const updateAccountDetails = asyncHandler(async (req, res, next) => {
 
   if (!user) throw new ApiError(500, "Error while updating user");
 
-  res
-    .status(200)
-    .json(new ApiResponse(200, user, "User updated successfully"));
+  res.status(200).json(new ApiResponse(200, user, "User updated successfully"));
 });
 
 const updateAvatar = asyncHandler(async (req, res, next) => {
@@ -254,6 +252,13 @@ const updateAvatar = asyncHandler(async (req, res, next) => {
   ).select("-password -refreshToken");
 
   if (!user) throw new ApiError(500, "Error while updating user");
+
+  const oldAvatar = req.user?.avatar;
+  const publicId = oldAvatar?.split("/")[7]?.split(".")[0];
+  const deleteOldAvatar = await deleteFromCloudinary(publicId);
+
+  if (!deleteOldAvatar)
+    throw new ApiError(500, "Error while deleting old avatar");
 
   res
     .status(200)
@@ -281,6 +286,14 @@ const updateCoverImage = asyncHandler(async (req, res, next) => {
   ).select("-password -refreshToken");
 
   if (!user) throw new ApiError(500, "Error while updating user");
+
+  const oldCoverImage = req.user?.coverImage;
+  const publicId = oldCoverImage?.split("/")[7]?.split(".")[0];
+  const deleteOldCoverImage = await deleteFromCloudinary(publicId);
+  console.log(deleteOldCoverImage);
+
+  if (!deleteOldCoverImage)
+    throw new ApiError(500, "Error while deleting old cover image");
 
   res
     .status(200)
