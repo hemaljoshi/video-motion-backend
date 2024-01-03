@@ -17,5 +17,7 @@ app.use(coookieParser());
 
 // Routes
 import userRouter from "./routes/user.routes";
+import vidoRouter from "./routes/video.routes"
 
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/video", vidoRouter)
