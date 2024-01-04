@@ -1,8 +1,31 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
-const userSchema = new mongoose.Schema(
+interface IUser {
+  username: string;
+  password: string;
+  email: string;
+  fullname: string;
+  avatar: string;
+  coverImage: string;
+  watchHistory: [
+    {
+      video: string;
+      duration: number;
+      timestamp: Date;
+    }
+  ];
+  refreshToken: string;
+}
+
+interface IUserDocument extends IUser, Document {
+  isPasswordCorrect: (password: string) => Promise<boolean>;
+  generateAccessToken: () => string;
+  generateRefreshToken: () => string;
+}
+
+const userSchema = new mongoose.Schema<IUserDocument>(
   {
     username: {
       type: String,

@@ -14,9 +14,7 @@ const options = {
 const generateTokens = async (userId) => {
   try {
     const user = await User.findById(userId);
-    //@ts-ignore
     const accessToken = user.generateAccessToken();
-    //@ts-ignore
     const refreshToken = user.generateRefreshToken();
 
     user.refreshToken = refreshToken;
@@ -106,7 +104,6 @@ const loginUser = asyncHandler(async (req, res, next) => {
     return res.status(404).json(new ApiError(404, "User not found"));
   }
 
-  //@ts-ignore
   const isPasswordValid = await user.isPasswordCorrect(password);
 
   if (!isPasswordValid) {
@@ -222,7 +219,6 @@ const changeCurrentPassword = asyncHandler(async (req, res, next) => {
     return res.status(404).json(new ApiError(404, "User not found"));
   }
 
-  //@ts-ignore
   const isPasswordValid = await user.isPasswordCorrect(currentPassword);
 
   if (!isPasswordValid) {
