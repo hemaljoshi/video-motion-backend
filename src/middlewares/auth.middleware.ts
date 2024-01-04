@@ -9,7 +9,7 @@ export const verifyJwtToken = asyncHandler(async (req, res, next) => {
       req.cookies?.accessToken ||
       req.headers("Authorization")?.replace("Bearer ", "");
 
-    if (!token) { 
+    if (!token) {
       return res.status(401).json(new ApiError(401, "Unauthorized request"));
     }
 
@@ -21,13 +21,15 @@ export const verifyJwtToken = asyncHandler(async (req, res, next) => {
       "-password -refreshToken"
     );
 
-    if (!user) { 
+    if (!user) {
       return res.status(401).json(new ApiError(401, "Invalid access token"));
     }
 
     req.user = user;
     next();
   } catch (error) {
-    return res.status(401).json(new ApiError(401, error?.message || "Invalid access token"));
+    return res
+      .status(401)
+      .json(new ApiError(401, error?.message || "Invalid access token"));
   }
 });

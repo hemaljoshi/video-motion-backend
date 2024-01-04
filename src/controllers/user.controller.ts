@@ -77,9 +77,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
   );
 
   if (!createdUser) {
-    return res
-      .status(500)
-      .json(new ApiError(500, "Error while creating user"));
+    return res.status(500).json(new ApiError(500, "Error while creating user"));
   }
 
   return res
@@ -91,7 +89,9 @@ const loginUser = asyncHandler(async (req, res, next) => {
   const { username, password, email } = req.body;
 
   if (!username && !email) {
-    return res.status(400).json(new ApiError(400, "Username or email is required"));
+    return res
+      .status(400)
+      .json(new ApiError(400, "Username or email is required"));
   }
 
   if (!password) {
@@ -213,9 +213,7 @@ const changeCurrentPassword = asyncHandler(async (req, res, next) => {
   if (!currentPassword || !newPassword) {
     return res
       .status(400)
-      .json(
-        new ApiError(400, "Current and new password are required")
-      );
+      .json(new ApiError(400, "Current and new password are required"));
   }
 
   const user = await User.findById(_id);
@@ -280,8 +278,10 @@ const updateAvatar = asyncHandler(async (req, res, next) => {
 
   const avatar = await uploadOnCloudinary(avatarLocalPath);
 
-  if (!avatar.url) { 
-    return res.status(500).json(new ApiError(500, "Error while uploading files on cloudinary"));
+  if (!avatar.url) {
+    return res
+      .status(500)
+      .json(new ApiError(500, "Error while uploading files on cloudinary"));
   }
 
   const user = await User.findByIdAndUpdate(
@@ -302,8 +302,10 @@ const updateAvatar = asyncHandler(async (req, res, next) => {
   const publicId = oldAvatar?.split("/")[7]?.split(".")[0];
   const deleteOldAvatar = await deleteFromCloudinary(publicId);
 
-  if (!deleteOldAvatar) { 
-    return res.status(500).json(new ApiError(500, "Error while deleting old avatar"));
+  if (!deleteOldAvatar) {
+    return res
+      .status(500)
+      .json(new ApiError(500, "Error while deleting old avatar"));
   }
 
   return res
@@ -320,8 +322,10 @@ const updateCoverImage = asyncHandler(async (req, res, next) => {
 
   const coverImage = await uploadOnCloudinary(coverImageLocalPath);
 
-  if (!coverImage.url) { 
-    return res.status(500).json(new ApiError(500, "Error while uploading files on cloudinary"));
+  if (!coverImage.url) {
+    return res
+      .status(500)
+      .json(new ApiError(500, "Error while uploading files on cloudinary"));
   }
 
   const user = await User.findByIdAndUpdate(
@@ -343,8 +347,10 @@ const updateCoverImage = asyncHandler(async (req, res, next) => {
   const deleteOldCoverImage = await deleteFromCloudinary(publicId);
   console.log(deleteOldCoverImage);
 
-  if (!deleteOldCoverImage) { 
-    return res.status(500).json(new ApiError(500, "Error while deleting old cover image"));
+  if (!deleteOldCoverImage) {
+    return res
+      .status(500)
+      .json(new ApiError(500, "Error while deleting old cover image"));
   }
 
   return res

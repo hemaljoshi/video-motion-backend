@@ -143,9 +143,7 @@ const deleteVideoFromWatchHistory = asyncHandler(async (req, res, next) => {
   if (!user) {
     return res
       .status(500)
-      .json(
-        new ApiError(500, "Error while deleting video from watch history")
-      );
+      .json(new ApiError(500, "Error while deleting video from watch history"));
   }
 
   return res
@@ -158,7 +156,7 @@ const deleteVideoFromWatchHistory = asyncHandler(async (req, res, next) => {
 const deleteVideo = asyncHandler(async (req, res, next) => {
   const videoId = req.params.videoId;
 
-  if (!videoId) { 
+  if (!videoId) {
     return res.status(400).json(new ApiError(400, "Video id is required"));
   }
 
@@ -167,8 +165,10 @@ const deleteVideo = asyncHandler(async (req, res, next) => {
     owner: req.user?._id,
   });
 
-  if (!video) { 
-    return res.status(500).json(new ApiError(500, "Error while deleting video"));
+  if (!video) {
+    return res
+      .status(500)
+      .json(new ApiError(500, "Error while deleting video"));
   }
 
   return res
