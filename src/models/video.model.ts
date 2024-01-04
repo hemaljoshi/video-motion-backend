@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
+import { User } from "./user.model";
 
 const videoSchema = new mongoose.Schema(
   {
@@ -14,6 +15,17 @@ const videoSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+videoSchema.pre("findOneAndDelete", async function (next) {
+  const videoId = this.getQuery()["_id"];
+
+  try {
+    await User.updateMany({}, { $pull: { watchHistory: { video: videoId } } });
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
 videoSchema.plugin(mongooseAggregatePaginate);
 

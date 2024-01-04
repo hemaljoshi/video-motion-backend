@@ -5,7 +5,7 @@ class ApiError extends Error {
     public statusCode: number,
     public message: string = "Something went wrong",
     public errors = [],
-    public stack: string = "",
+    public stack: string = ""
   ) {
     super(message);
     this.statusCode = statusCode;
@@ -13,12 +13,33 @@ class ApiError extends Error {
     this.message = message;
     this.success = false;
     this.errors = errors;
-
+    
     if (stack) {
       this.stack = stack;
     } else {
       Error.captureStackTrace(this, this.constructor);
     }
+  }
+
+  toJSON() {
+    let response = {
+      success: this.success,
+      data: this.data,
+      message: this.message,
+      errors: this.errors,
+    };
+
+    if (!this.data) { 
+      delete response.data;
+    }
+     
+    if (this.errors.length === 0) {
+      delete response.errors;
+    }
+
+    console.error(this.stack);
+
+    return response;
   }
 }
 

@@ -22,7 +22,11 @@ const userSchema = new mongoose.Schema(
     fullname: { type: String, required: true, trim: true, index: true },
     avatar: { type: String, required: true },
     coverImage: { type: String },
-    watchHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }],
+    watchHistory: [{ 
+      video: { type: mongoose.Schema.Types.ObjectId, ref: "Video" },
+      duration: { type: Number },
+      timestamp: { type: Date, default: Date.now },
+    }],
     password: { type: String, required: [true, "Password is required"] },
     refreshToken: { type: String },
   },
