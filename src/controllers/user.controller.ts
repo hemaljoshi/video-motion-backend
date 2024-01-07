@@ -154,8 +154,6 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
   const { refreshToken: refreshTokenFromReq } = req.body;
   const incomingRefreshToken = refreshTokenFromReq || refreshToken;
 
-  console.log('refreshToken', incomingRefreshToken)
-
   if (!incomingRefreshToken) {
     return res.status(401).json(new ApiError(401, "Unauthorized request"));
   }
@@ -343,7 +341,6 @@ const updateCoverImage = asyncHandler(async (req, res, next) => {
   const oldCoverImage = req.user?.coverImage;
   const publicId = oldCoverImage?.split("/")[7]?.split(".")[0];
   const deleteOldCoverImage = await deleteFromCloudinary(publicId);
-  console.log(deleteOldCoverImage);
 
   if (!deleteOldCoverImage) {
     return res
@@ -413,8 +410,6 @@ const getUserChannelProfile = asyncHandler(async (req, res, next) => {
       },
     },
   ]);
-
-  console.log("channelAggrigate: ", channel);
 
   if (!channel?.length) {
     return res.status(404).json(new ApiError(404, "Channel does not exists"));

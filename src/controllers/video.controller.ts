@@ -23,8 +23,6 @@ const addVideo = asyncHandler(async (req, res, next) => {
       .json(new ApiError(500, "Error while uploading video on cloudinary"));
   }
 
-  console.log("video: ", videoFile);
-
   const localThumbnailPath = req.files?.thumbnail[0]?.path;
   if (!localThumbnailPath) {
     return res.status(400).json(new ApiError(400, "Thumbnail is required"));
