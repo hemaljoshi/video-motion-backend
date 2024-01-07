@@ -7,13 +7,11 @@ import {
   getAllVideos,
   increaseViewCount,
 } from "../controllers/video.controller";
-import { verifyJwtToken } from "../middlewares/auth.middleware";
 import { upload } from "../middlewares/multer.middleware";
 const router = Router();
 
 router.route("/").post(
-  verifyJwtToken,
-  upload.fields([
+    upload.fields([
     {
       name: "videoFile",
       maxCount: 1,
@@ -28,18 +26,18 @@ router.route("/").post(
 
 router
   .route("/increase-view-count/:videoId")
-  .patch(verifyJwtToken, increaseViewCount);
+  .patch(increaseViewCount);
 
 router
   .route("/add-to-watch-history/:videoId")
-  .patch(verifyJwtToken, addVideoToWatchHistory);
+  .patch(addVideoToWatchHistory);
 
 router
   .route("/delete-video-from-history/:videoId")
-  .delete(verifyJwtToken, deleteVideoFromWatchHistory);
+  .delete(deleteVideoFromWatchHistory);
 
-router.route("/:videoId").delete(verifyJwtToken, deleteVideo);
+router.route("/:videoId").delete(deleteVideo);
 
-router.route("/").get(verifyJwtToken, getAllVideos);
+router.route("/").get(getAllVideos);
 
 export default router;

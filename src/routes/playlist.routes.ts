@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { verifyJwtToken } from "../middlewares/auth.middleware";
 import {
   addToPlaylist,
   deletePlaylist,
@@ -11,16 +10,16 @@ import {
 
 const router = Router();
 
-router.route("/add-to-playlist").post(verifyJwtToken, addToPlaylist);
+router.route("/add-to-playlist").post(addToPlaylist);
 
-router.route("/remove-from-playlist").post(verifyJwtToken, removeFromPlaylist);
+router.route("/remove-from-playlist").post(removeFromPlaylist);
 
-router.route("/delete-playlist/:id").delete(verifyJwtToken, deletePlaylist);
+router.route("/delete-playlist/:id").delete(deletePlaylist);
 
-router.route("/update-playlist").patch(verifyJwtToken, updatePlaylist);
+router.route("/update-playlist").patch(updatePlaylist);
 
-router.route("/:id").get(verifyJwtToken, getPlaylist);
+router.route("/:id").get(getPlaylist);
 
-router.route("/").get(verifyJwtToken, getAllPlaylists)
+router.route("/").get(getAllPlaylists)
 
 export default router;

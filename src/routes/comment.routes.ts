@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { verifyJwtToken } from "../middlewares/auth.middleware";
 import {
   addComment,
   deleteComment,
@@ -8,12 +7,12 @@ import {
 } from "../controllers/comment.controller";
 const router = Router();
 
-router.route("/add-comment").post(verifyJwtToken, addComment);
+router.route("/add-comment").post(addComment);
 
-router.route("/delete-comment/:id").delete(verifyJwtToken, deleteComment);
+router.route("/delete-comment/:id").delete(deleteComment);
 
-router.route("/update-comment/:id").patch(verifyJwtToken, updateComment);
+router.route("/update-comment/:id").patch(updateComment);
 
-router.route("/:id").get(verifyJwtToken, getComments);
+router.route("/:id").get(getComments);
 
 export default router;

@@ -4,6 +4,14 @@ import asyncHandler from "../utils/asyncHandler";
 import jwt from "jsonwebtoken";
 
 export const verifyJwtToken = asyncHandler(async (req, res, next) => {
+  if (
+    req.path === "/api/v1/users/register" ||
+    req.path === "/api/v1/users/login" ||
+    req.path === "/api/v1/users/refresh-token"
+  ) {
+    return next();
+  }
+
   try {
     const token =
       req.cookies?.accessToken ||
