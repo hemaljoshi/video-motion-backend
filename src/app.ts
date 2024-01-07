@@ -19,7 +19,9 @@ app.use(coookieParser());
 import userRouter from "./routes/user.routes";
 import vidoRouter from "./routes/video.routes"
 import playlistRouter from "./routes/playlist.routes"
+import commentRouter from "./routes/comment.routes"
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/video", vidoRouter)
 app.use("/api/v1/playlist", playlistRouter)
+app.use("/api/v1/comment", commentRouter)
