@@ -176,10 +176,43 @@ const deleteVideo = asyncHandler(async (req, res, next) => {
     .json(new ApiResponse(200, {}, "Video deleted successfully"));
 });
 
+const getAllVideos = asyncHandler(async (req, res, next) => {
+  const { page = 1, limit = 10 } = req.query; // Retrieve pagination parameters
+
+  const aggregate = Video.aggregate();
+
+  // Apply any additional aggregation stages if needed (e.g., filtering, sorting)
+  aggregate.sort({ createdAt: -1 });
+
+  //@ts-ignore
+  const paginatedVideos = await Video.aggregatePaginate(aggregate, {
+    page,
+    limit,
+  });
+
+  const totalDocs = paginatedVideos.totalDocs; // Provided by the plugin
+  const totalPages = Math.ceil(totalDocs / limit);
+
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        videos: paginatedVideos.docs,
+        totalPages,
+      },
+      "All videos fetched successfully"
+    )
+  );
+
+});
+
+
 export {
   addVideo,
   increaseViewCount,
   addVideoToWatchHistory,
   deleteVideoFromWatchHistory,
   deleteVideo,
+  getAllVideos,
 };

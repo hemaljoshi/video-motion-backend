@@ -4,6 +4,7 @@ import {
   addVideoToWatchHistory,
   deleteVideo,
   deleteVideoFromWatchHistory,
+  getAllVideos,
   increaseViewCount,
 } from "../controllers/video.controller";
 import { verifyJwtToken } from "../middlewares/auth.middleware";
@@ -38,5 +39,7 @@ router
   .delete(verifyJwtToken, deleteVideoFromWatchHistory);
 
 router.route("/:videoId").delete(verifyJwtToken, deleteVideo);
+
+router.route("/").get(verifyJwtToken, getAllVideos);
 
 export default router;

@@ -138,7 +138,7 @@ const logoutUser = asyncHandler(async (req, res, next) => {
 
   await User.findByIdAndUpdate(
     userID,
-    { $set: { refreshToken: undefined } },
+    { $unset: { refreshToken: 1 } },
     { new: true }
   );
 
@@ -154,6 +154,8 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
   const { refreshToken: refreshTokenFromReq } = req.body;
   const incomingRefreshToken = refreshTokenFromReq || refreshToken;
 
+  console.log('refreshToken', incomingRefreshToken)
+
   if (!incomingRefreshToken) {
     return res.status(401).json(new ApiError(401, "Unauthorized request"));
   }
@@ -165,7 +167,7 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
     );
 
     const user = await User.findById(decodedToken?._id).select(
-      "-password -refreshToken"
+      "-password"
     );
 
     if (!user) {
@@ -391,7 +393,7 @@ const getUserChannelProfile = asyncHandler(async (req, res, next) => {
         },
         isSubscribed: {
           $cond: {
-            if: { $in: [req.user?._id, "subscribers.subscriber"] },
+            if: { $in: [req.user?._id, "$subscribers.subscriber"] },
             then: true,
             else: false,
           },
