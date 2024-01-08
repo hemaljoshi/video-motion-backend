@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Comment } from "../models/comment.model";
 import ApiError from "../utils/ApiError";
 import ApiResponse from "../utils/ApiResponse";
@@ -68,24 +69,69 @@ const updateComment = asyncHandler(async (req, res) => {
 });
 
 const getComments = asyncHandler(async (req, res) => {
-  const videoId = req.params.id;
+  try {
+    const videoId = req.params.id;
+    const { page = 1, limit = 10 } = req.query;
 
-  if (!videoId) {
-    return res.status(400).json(new ApiError(400, "Video id is required"));
+    if (!videoId) {
+      return res.status(400).json(new ApiError(400, "Video id is required"));
+    }
+
+    const aggregate = Comment.aggregate([
+      {
+        $match: {
+          video: new mongoose.Types.ObjectId(videoId),
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "owner",
+          foreignField: "_id",
+          as: "owner",
+        },
+      },
+      {
+        $unwind: "$owner", // lookup returns an array, so we need to unwind it to get the object
+      },
+      {
+        $project: {
+          "owner.username": 1,
+          "owner.fullname": 1,
+          "owner.avatar": 1,
+          "owner._id": 1,
+          content: 1,
+          video: 1,
+          createdAt: 1,
+          updatedAt: 1,
+        },
+      },
+    ]);
+
+    // @ts-ignore
+    const paginatedComments = await Comment.aggregatePaginate(aggregate, {
+      page: parseInt(page),
+      limit: parseInt(limit),
+    });
+
+    if (!paginatedComments) {
+      return res.status(404).json(new ApiError(404, "Comments not found"));
+    }
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {
+          comments: paginatedComments.docs,
+          total: paginatedComments.totalDocs,
+        },
+        "Comments fetched successfully"
+      )
+    );
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    return res.status(500).json(new ApiError(500, "Internal Server Error"));
   }
-
-  const comments = await Comment.find({ video: videoId }).populate({
-    path: "owner", 
-    select: ["username", "fullname", "avatar", "_id"],
-  });
-
-  if (!comments) {
-    return res.status(404).json(new ApiError(404, "Comments not found"));
-  }
-
-  return res
-    .status(200)
-    .json(new ApiResponse(200, comments, "Comments fetched successfully"));
 });
 
 export { addComment, deleteComment, updateComment, getComments };
