@@ -1,25 +1,29 @@
 import { Router } from "express";
 import {
-  addToPlaylist,
+  addVideoToPlaylist,
+  createPlaylist,
   deletePlaylist,
   getAllPlaylists,
-  getPlaylist,
-  removeFromPlaylist,
+  getPlaylistById,
+  removeVideoFromPlaylist,
   updatePlaylist,
 } from "../controllers/playlist.controller";
 
 const router = Router();
 
-router.route("/add-to-playlist").post(addToPlaylist);
+router.route("/").post(createPlaylist).get(getAllPlaylists);
 
-router.route("/remove-from-playlist").post(removeFromPlaylist);
+router
+  .route("/:playlistId")
+  .get(getPlaylistById)
+  .patch(updatePlaylist)
+  .delete(deletePlaylist);
 
-router.route("/delete-playlist/:id").delete(deletePlaylist);
+router.route("/add").patch(addVideoToPlaylist);
 
-router.route("/update-playlist").patch(updatePlaylist);
+router.route("/remove").patch(removeVideoFromPlaylist);
 
-router.route("/:id").get(getPlaylist);
+router.route("/user/:userId").get(getAllPlaylists);
 
-router.route("/").get(getAllPlaylists)
 
 export default router;

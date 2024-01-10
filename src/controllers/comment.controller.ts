@@ -3,12 +3,20 @@ import { Comment } from "../models/comment.model";
 import ApiError from "../utils/ApiError";
 import ApiResponse from "../utils/ApiResponse";
 import asyncHandler from "../utils/asyncHandler";
+import { Video } from "../models/video.model";
 
 const addComment = asyncHandler(async (req, res) => {
-  const { content, video } = req.body;
+  const videoId = req.params.id
+  const { content } = req.body;
 
-  if (!content || !video) {
+  if (!content || !videoId) {
     return res.status(400).json(new ApiError(400, "Missing required fields"));
+  }
+
+  const video = await Video.findById(videoId);
+
+  if (!video) {
+    return res.status(404).json(new ApiError(404, "Video not found"));
   }
 
   const newComment = await Comment.create({
@@ -28,7 +36,7 @@ const addComment = asyncHandler(async (req, res) => {
 });
 
 const deleteComment = asyncHandler(async (req, res) => {
-  const commentId = req.params.id;
+  const commentId = req.params.commentId;
 
   if (!commentId) {
     return res.status(400).json(new ApiError(400, "Comment id is required"));
@@ -46,7 +54,7 @@ const deleteComment = asyncHandler(async (req, res) => {
 });
 
 const updateComment = asyncHandler(async (req, res) => {
-  const commentId = req.params.id;
+  const commentId = req.params.commentId;
   const { content } = req.body;
 
   if (!commentId) {

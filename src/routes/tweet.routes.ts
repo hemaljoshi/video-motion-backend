@@ -1,14 +1,18 @@
 import { Router } from "express";
-import { addTweet, deleteTweet, getAllTweet, updateTweet } from "../controllers/tweet.controller";
+import {
+  createTweet,
+  deleteTweet,
+  getAllTweet,
+  getUserTweet,
+  updateTweet,
+} from "../controllers/tweet.controller";
 
 const router = Router();
 
-router.route("/add-tweet").post(addTweet);
+router.route("/").get(getAllTweet).post(createTweet);
 
-router.route("/").get(getAllTweet);
+router.route("/user/:userId").get(getUserTweet);
 
-router.route("/update-tweet/:id").patch(updateTweet);
-
-router.route("/delete-tweet/:id").delete(deleteTweet);
+router.route("/:tweetId").patch(updateTweet).delete(deleteTweet);
 
 export default router;

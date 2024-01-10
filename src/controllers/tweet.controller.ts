@@ -3,7 +3,7 @@ import ApiError from "../utils/ApiError";
 import ApiResponse from "../utils/ApiResponse";
 import asyncHandler from "../utils/asyncHandler";
 
-const addTweet = asyncHandler(async (req, res) => {
+const createTweet = asyncHandler(async (req, res) => {
   const { content } = req.body;
   const { _id } = req.user;
 
@@ -33,11 +33,30 @@ const getAllTweet = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, tweets, "All tweets"));
 });
 
+const getUserTweet = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
+
+  if (!userId) {
+    return res.status(400).json(new ApiError(400, "User id is required"));
+  }
+
+  const tweets = await Tweet.find({ owner: userId }).populate(
+    "owner",
+    "_id fullname username avatar"
+  );
+
+  if (!tweets) {
+    return res.status(404).json(new ApiError(404, "Tweet not found"));
+  }
+
+  return res.status(200).json(new ApiResponse(200, tweets, "User tweets"));
+});
+
 const updateTweet = asyncHandler(async (req, res) => {
   const { content } = req.body;
-  const { id } = req.params;
+  const { tweetId } = req.params;
 
-  if (!id) {
+  if (!tweetId) {
     return res.status(400).json(new ApiError(400, "Tweet id is required"));
   }
 
@@ -46,7 +65,7 @@ const updateTweet = asyncHandler(async (req, res) => {
   }
 
   const tweet = await Tweet.findOneAndUpdate(
-    { _id: id },
+    { _id: tweetId },
     { content },
     { new: true }
   );
@@ -59,13 +78,13 @@ const updateTweet = asyncHandler(async (req, res) => {
 });
 
 const deleteTweet = asyncHandler(async (req, res) => {
-  const { id } = req.params;
+  const { tweetId } = req.params;
 
-  if (!id) {
+  if (!tweetId) {
     return res.status(400).json(new ApiError(400, "Tweet id is required"));
   }
 
-  const tweet = await Tweet.findByIdAndDelete(id);
+  const tweet = await Tweet.findByIdAndDelete(tweetId);
 
   if (!tweet) {
     return res.status(404).json(new ApiError(404, "Tweet not found"));
@@ -74,4 +93,4 @@ const deleteTweet = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, tweet, "Tweet deleted"));
 });
 
-export { addTweet, getAllTweet, updateTweet, deleteTweet };
+export { createTweet, getAllTweet, updateTweet, deleteTweet, getUserTweet };

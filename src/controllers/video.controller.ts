@@ -5,7 +5,7 @@ import ApiResponse from "../utils/ApiResponse";
 import asyncHandler from "../utils/asyncHandler";
 import { uploadOnCloudinary } from "../utils/cloudinary";
 
-const addVideo = asyncHandler(async (req, res, next) => {
+const publishVideo = asyncHandler(async (req, res, next) => {
   const { title, description } = req.body;
 
   if ([title, description].some((field) => field?.trim() === "")) {
@@ -191,7 +191,6 @@ const getAllVideos = asyncHandler(async (req, res, next) => {
   const totalDocs = paginatedVideos.totalDocs; // Provided by the plugin
   const totalPages = Math.ceil(totalDocs / limit);
 
-
   return res.status(200).json(
     new ApiResponse(
       200,
@@ -202,15 +201,117 @@ const getAllVideos = asyncHandler(async (req, res, next) => {
       "All videos fetched successfully"
     )
   );
-
 });
 
+const getVideoById = asyncHandler(async (req, res, next) => {
+  const videoId = req.params.videoId;
+
+  if (!videoId) {
+    return res.status(400).json(new ApiError(400, "Video id is required"));
+  }
+
+  const video = await Video.findById(videoId).populate(
+    "owner",
+    "_id fullname username avatar"
+  );
+
+  if (!video) {
+    return res.status(404).json(new ApiError(404, "Video not found"));
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, video, "Video fetched successfully"));
+});
+
+const tooglePublishStatus = asyncHandler(async (req, res, next) => {
+  const videoId = req.params.videoId;
+
+  if (!videoId) {
+    return res.status(400).json(new ApiError(400, "Video id is required"));
+  }
+
+  const video = await Video.findById(videoId);
+
+  if (!video) {
+    return res.status(404).json(new ApiError(404, "Video not found"));
+  }
+
+  const updatedVideo = await Video.findByIdAndUpdate(
+    videoId,
+    { isPublished: !video.isPublished },
+    { new: true }
+  );
+
+  if (!updatedVideo) {
+    return res
+      .status(500)
+      .json(new ApiError(500, "Error while updating video status"));
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, updatedVideo, "Video status updated"));
+});
+
+const updateVideo = asyncHandler(async (req, res) => {
+  const { videoId } = req.params;
+  const { title, description } = req.body;
+
+  if (!videoId) {
+    return res.status(400).json(new ApiError(400, "Video id is required"));
+  }
+
+  const thumbnail = req.file?.path;
+
+  const video = await Video.findById(videoId);
+
+  if (!video) {
+    return res.status(404).json(new ApiError(404, "Video not found"));
+  }
+
+  let thumbnailUrl;
+
+  if (thumbnail) {
+    thumbnailUrl = await uploadOnCloudinary(thumbnail);
+    if (!thumbnailUrl.url) {
+      return res
+        .status(500)
+        .json(
+          new ApiError(500, "Error while uploading thumbnail on cloudinray")
+        );
+    }
+  }
+
+  let updatedVideo = await Video.findByIdAndUpdate(
+    videoId,
+    {
+      title: title || video.title,
+      description: description || video.description,
+      thumbnail: thumbnailUrl?.url || video.thumbnail,
+    },
+    { new: true }
+  );
+
+  if (!updatedVideo) {
+    return res
+      .status(500)
+      .json(new ApiError(500, "Error while updating video"));
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, updatedVideo, "Video updated successfully"));
+});
 
 export {
-  addVideo,
+  publishVideo,
   increaseViewCount,
   addVideoToWatchHistory,
   deleteVideoFromWatchHistory,
   deleteVideo,
   getAllVideos,
+  getVideoById,
+  tooglePublishStatus,
+  updateVideo,
 };
