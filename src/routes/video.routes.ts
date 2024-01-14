@@ -8,7 +8,7 @@ import {
   increaseViewCount,
   getVideoById,
   updateVideo,
-  tooglePublishStatus,
+  togglePublishStatus,
 } from "../controllers/video.controller";
 import { upload } from "../middlewares/multer.middleware";
 const router = Router();
@@ -43,6 +43,6 @@ router
 
 router.route("/:videoId").delete(deleteVideo).get(getVideoById).patch(upload.single("thumbnail"), updateVideo);
 
-router.route("/toogle-published-status/:videoId").patch(tooglePublishStatus)
+router.route("/toggle-published-status/:videoId").patch(togglePublishStatus)
 
 export default router;

@@ -4,18 +4,18 @@ import {
   getLikedVideos,
   getTweetLikesCount,
   getVideoLikesCount,
-  toogleCommentLike,
-  toogleTweetLike,
-  toogleVideoLike,
+  toggleCommentLike,
+  toggleTweetLike,
+  toggleVideoLike,
 } from "../controllers/like.controller";
 
 const router = Router();
 
-router.route("/toogle/c/:commentId").post(toogleCommentLike);
+router.route("/toggle/c/:commentId").post(toggleCommentLike);
 
-router.route("/toogle/t/:tweetId").post(toogleTweetLike);
+router.route("/toggle/t/:tweetId").post(toggleTweetLike);
 
-router.route("/toogle/v/:videoId").post(toogleVideoLike);
+router.route("/toggle/v/:videoId").post(toggleVideoLike);
 
 router.route("/count/v/:videoId").get(getVideoLikesCount);
 

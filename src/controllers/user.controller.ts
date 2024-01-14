@@ -26,7 +26,7 @@ const generateTokens = async (userId) => {
   }
 };
 
-const registerUser = asyncHandler(async (req, res, next) => {
+const registerUser = asyncHandler(async (req, res) => {
   const { fullname, email, password, username } = req.body;
 
   if ([fullname, email, password, username].some((arg) => arg?.trim() === "")) {
@@ -41,11 +41,11 @@ const registerUser = asyncHandler(async (req, res, next) => {
   }
 
   const avatarLocalPath = req.files?.avatar[0]?.path;
-  const coverImageExists = req.files?.coverImage ? true : false;
+  const coverImageExists = "coverImage" in req.files ? true : false;
   const coverImageLocalPath = coverImageExists
-    ? req.files?.coverImage[0]?.path
+    ? req.files.coverImage[0].path
     : "";
-
+  
   if (!avatarLocalPath) {
     return res.status(400).json(new ApiError(400, "Avatar is required"));
   }
@@ -83,7 +83,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
     .json(new ApiResponse(200, createdUser, "User created successfully"));
 });
 
-const loginUser = asyncHandler(async (req, res, next) => {
+const loginUser = asyncHandler(async (req, res) => {
   const { username, password, email } = req.body;
 
   if (!username && !email) {
@@ -133,7 +133,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
     );
 });
 
-const logoutUser = asyncHandler(async (req, res, next) => {
+const logoutUser = asyncHandler(async (req, res) => {
   const userID = req.user._id;
 
   await User.findByIdAndUpdate(
@@ -149,7 +149,7 @@ const logoutUser = asyncHandler(async (req, res, next) => {
     .json(new ApiResponse(200, {}, "User logged out successfully"));
 });
 
-const refreshAccessToken = asyncHandler(async (req, res, next) => {
+const refreshAccessToken = asyncHandler(async (req, res) => {
   const { refreshToken } = req.cookies;
   const { refreshToken: refreshTokenFromReq } = req.body;
   const incomingRefreshToken = refreshTokenFromReq || refreshToken;
@@ -203,7 +203,7 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
   }
 });
 
-const changeCurrentPassword = asyncHandler(async (req, res, next) => {
+const changeCurrentPassword = asyncHandler(async (req, res) => {
   const { currentPassword, newPassword } = req.body;
   const { _id } = req.user;
 
@@ -233,13 +233,13 @@ const changeCurrentPassword = asyncHandler(async (req, res, next) => {
     .json(new ApiResponse(200, {}, "Password changed successfully"));
 });
 
-const getCurrentUser = asyncHandler(async (req, res, next) => {
+const getCurrentUser = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, req.user, "Current user fetched successfully"));
 });
 
-const updateAccountDetails = asyncHandler(async (req, res, next) => {
+const updateAccountDetails = asyncHandler(async (req, res) => {
   const { fullname, email, username } = req.body;
 
   if ([fullname, email, username].some((arg) => arg?.trim() === "")) {
@@ -265,7 +265,7 @@ const updateAccountDetails = asyncHandler(async (req, res, next) => {
   res.status(200).json(new ApiResponse(200, user, "User updated successfully"));
 });
 
-const updateAvatar = asyncHandler(async (req, res, next) => {
+const updateAvatar = asyncHandler(async (req, res) => {
   const avatarLocalPath = req.file?.path;
 
   if (!avatarLocalPath) {
@@ -309,7 +309,7 @@ const updateAvatar = asyncHandler(async (req, res, next) => {
     .json(new ApiResponse(200, user, "Avatar updated successfully"));
 });
 
-const updateCoverImage = asyncHandler(async (req, res, next) => {
+const updateCoverImage = asyncHandler(async (req, res) => {
   const coverImageLocalPath = req.file?.path;
 
   if (!coverImageLocalPath) {
@@ -353,7 +353,7 @@ const updateCoverImage = asyncHandler(async (req, res, next) => {
     .json(new ApiResponse(200, user, "Cover image updated successfully"));
 });
 
-const getUserChannelProfile = asyncHandler(async (req, res, next) => {
+const getUserChannelProfile = asyncHandler(async (req, res) => {
   const { username } = req.params;
 
   if (!username?.trim()) {
@@ -422,7 +422,7 @@ const getUserChannelProfile = asyncHandler(async (req, res, next) => {
     );
 });
 
-const getWatchHistory = asyncHandler(async (req, res, next) => {
+const getWatchHistory = asyncHandler(async (req, res) => {
   const user = await User.aggregate([
     {
       $match: {

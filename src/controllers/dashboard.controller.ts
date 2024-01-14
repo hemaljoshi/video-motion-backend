@@ -60,13 +60,17 @@ const getChannelStats = asyncHandler(async (req, res) => {
   ]);
 
   res.status(200).json(
-    new ApiResponse(200, {
-      totalVideos,
-      totalSubscribers,
-      totalLikes,
-      totalViews: totalViews[0].views,
-      totalComments: totalComments[0].comments,
-    })
+    new ApiResponse(
+      200,
+      {
+        totalVideos,
+        totalSubscribers,
+        totalLikes,
+        totalViews: totalViews[0].views,
+        totalComments: totalComments[0].comments,
+      },
+      "Channel stats fetched successfully"
+    )
   );
 });
 
@@ -83,7 +87,11 @@ const getChannelVideos = asyncHandler(async (req, res) => {
   if (!channelVideos)
     return res.status(404).json(new ApiError(404, "Channel not found"));
 
-  res.status(200).json(new ApiResponse(200, channelVideos, "Channel videos fetched successfully"));
+  res
+    .status(200)
+    .json(
+      new ApiResponse(200, channelVideos, "Channel videos fetched successfully")
+    );
 });
 
 export { getChannelStats, getChannelVideos };

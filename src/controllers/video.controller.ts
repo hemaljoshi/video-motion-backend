@@ -5,7 +5,7 @@ import ApiResponse from "../utils/ApiResponse";
 import asyncHandler from "../utils/asyncHandler";
 import { uploadOnCloudinary } from "../utils/cloudinary";
 
-const publishVideo = asyncHandler(async (req, res, next) => {
+const publishVideo = asyncHandler(async (req, res) => {
   const { title, description } = req.body;
 
   if ([title, description].some((field) => field?.trim() === "")) {
@@ -31,7 +31,7 @@ const publishVideo = asyncHandler(async (req, res, next) => {
   if (!thumbnail.url) {
     return res
       .status(500)
-      .json(new ApiError(500, "Error while uploading thumbnail on cloudinray"));
+      .json(new ApiError(500, "Error while uploading thumbnail on cloudinary"));
   }
 
   const video = await Video.create({
@@ -48,7 +48,7 @@ const publishVideo = asyncHandler(async (req, res, next) => {
     .json(new ApiResponse(201, video, "Video uploaded successfully"));
 });
 
-const increaseViewCount = asyncHandler(async (req, res, next) => {
+const increaseViewCount = asyncHandler(async (req, res) => {
   const videoID = req.params.videoId;
 
   if (!videoID) {
@@ -70,7 +70,7 @@ const increaseViewCount = asyncHandler(async (req, res, next) => {
     .json(new ApiResponse(200, video, "View count incremented successfully"));
 });
 
-const addVideoToWatchHistory = asyncHandler(async (req, res, next) => {
+const addVideoToWatchHistory = asyncHandler(async (req, res) => {
   const videoID = req.params.videoId;
   const { duration } = req.body;
 
@@ -119,7 +119,7 @@ const addVideoToWatchHistory = asyncHandler(async (req, res, next) => {
     .json(new ApiResponse(200, user, "Video added to watch history"));
 });
 
-const deleteVideoFromWatchHistory = asyncHandler(async (req, res, next) => {
+const deleteVideoFromWatchHistory = asyncHandler(async (req, res) => {
   const videoId = req.params.videoId;
 
   if (!videoId) {
@@ -151,7 +151,7 @@ const deleteVideoFromWatchHistory = asyncHandler(async (req, res, next) => {
     );
 });
 
-const deleteVideo = asyncHandler(async (req, res, next) => {
+const deleteVideo = asyncHandler(async (req, res) => {
   const videoId = req.params.videoId;
 
   if (!videoId) {
@@ -174,7 +174,7 @@ const deleteVideo = asyncHandler(async (req, res, next) => {
     .json(new ApiResponse(200, {}, "Video deleted successfully"));
 });
 
-const getAllVideos = asyncHandler(async (req, res, next) => {
+const getAllVideos = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10 } = req.query; // Retrieve pagination parameters
 
   const aggregate = Video.aggregate();
@@ -203,7 +203,7 @@ const getAllVideos = asyncHandler(async (req, res, next) => {
   );
 });
 
-const getVideoById = asyncHandler(async (req, res, next) => {
+const getVideoById = asyncHandler(async (req, res) => {
   const videoId = req.params.videoId;
 
   if (!videoId) {
@@ -224,7 +224,7 @@ const getVideoById = asyncHandler(async (req, res, next) => {
     .json(new ApiResponse(200, video, "Video fetched successfully"));
 });
 
-const tooglePublishStatus = asyncHandler(async (req, res, next) => {
+const togglePublishStatus = asyncHandler(async (req, res) => {
   const videoId = req.params.videoId;
 
   if (!videoId) {
@@ -278,7 +278,7 @@ const updateVideo = asyncHandler(async (req, res) => {
       return res
         .status(500)
         .json(
-          new ApiError(500, "Error while uploading thumbnail on cloudinray")
+          new ApiError(500, "Error while uploading thumbnail on cloudinary")
         );
     }
   }
@@ -312,6 +312,6 @@ export {
   deleteVideo,
   getAllVideos,
   getVideoById,
-  tooglePublishStatus,
+  togglePublishStatus,
   updateVideo,
 };

@@ -12,23 +12,26 @@ const toggleSubscription = asyncHandler(async (req, res) => {
   });
 
   let channel;
+  let message;
   if (existingSubscription) {
     channel = await Subscription.findOneAndDelete({
       channel: channelId,
       subscriber: req.user._id,
     });
+    message = "Successfully unsubscribed";
   } else {
     channel = await Subscription.create({
       channel: channelId,
       subscriber: req.user._id,
     });
+    message = "Successfully subscribed";
   }
 
   if (!channel) {
     return res.status(404).json(new ApiError(404, "Channel not found"));
   }
 
-  return res.status(200).json(new ApiResponse(200, channel, "Subscription updated"));
+  return res.status(200).json(new ApiResponse(200, channel, message));
 });
 
 const getUserChannelSubscribers = asyncHandler(async (req, res) => {
@@ -43,7 +46,7 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
     return res.status(404).json(new ApiError(404, "Subscribers not found"));
   }
 
-  return res.status(200).json(new ApiResponse(200, subscribers, "Subscribers found"));
+  return res.status(200).json(new ApiResponse(200, subscribers, "Subscribers fetched successfully"));
 });
 
 const getSubscribedChannels = asyncHandler(async (req, res) => {
@@ -62,7 +65,7 @@ const getSubscribedChannels = asyncHandler(async (req, res) => {
     return res.status(404).json(new ApiError(404, "Channels not found"));
   }
 
-  return res.status(200).json(new ApiResponse(200, channels, "Channels found"));
+  return res.status(200).json(new ApiResponse(200, channels, "Channels fetched successfully"));
 });
 
 export { toggleSubscription, getUserChannelSubscribers, getSubscribedChannels };

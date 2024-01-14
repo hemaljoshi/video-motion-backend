@@ -32,7 +32,7 @@ const addComment = asyncHandler(async (req, res) => {
 
   return res
     .status(201)
-    .json(new ApiResponse(201, newComment, "Comment added"));
+    .json(new ApiResponse(201, newComment, "Comment added successfully"));
 });
 
 const deleteComment = asyncHandler(async (req, res) => {
@@ -50,7 +50,7 @@ const deleteComment = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, deleteComment, "Comment deleted successfully"));
+    .json(new ApiResponse(200, {}, "Comment deleted successfully"));
 });
 
 const updateComment = asyncHandler(async (req, res) => {
