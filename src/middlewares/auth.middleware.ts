@@ -4,9 +4,6 @@ import asyncHandler from "../utils/asyncHandler";
 import jwt from "jsonwebtoken";
 
 export const verifyJwtToken = asyncHandler(async (req, res, next) => {
-  const path = req.path;
-  console.log("🚀 ~ verifyJwtToken ~ path:", path)
-  
   if (
     req.path === "/api/v1/users/register" ||
     req.path === "/api/v1/users/login" ||
