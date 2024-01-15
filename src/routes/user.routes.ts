@@ -55,4 +55,8 @@ router.route("/c/:username").get(getUserChannelProfile)
 
 router.route("/history").get(getWatchHistory)
 
+// TODO: add route for forgot password
+// TODO: add route for reset password
+// TODO: smtp server for sending emails
+
 export default router;
