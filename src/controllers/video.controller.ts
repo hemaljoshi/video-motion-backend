@@ -254,7 +254,7 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, updatedVideo, "Video status updated"));
 });
 
-const updateVideo = asyncHandler(async (req, res) => {
+const updateVideoDetails = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
   const { title, description } = req.body;
 
@@ -313,5 +313,5 @@ export {
   getAllVideos,
   getVideoById,
   togglePublishStatus,
-  updateVideo,
+  updateVideoDetails,
 };

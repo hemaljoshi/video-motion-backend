@@ -7,8 +7,8 @@ import {
   getAllVideos,
   increaseViewCount,
   getVideoById,
-  updateVideo,
   togglePublishStatus,
+  updateVideoDetails,
 } from "../controllers/video.controller";
 import { upload } from "../middlewares/multer.middleware";
 const router = Router();
@@ -41,7 +41,7 @@ router
   .route("/delete-video-from-history/:videoId")
   .delete(deleteVideoFromWatchHistory);
 
-router.route("/:videoId").delete(deleteVideo).get(getVideoById).patch(upload.single("thumbnail"), updateVideo);
+router.route("/:videoId").delete(deleteVideo).get(getVideoById).patch(upload.single("thumbnail"), updateVideoDetails);
 
 router.route("/toggle-published-status/:videoId").patch(togglePublishStatus)
 
