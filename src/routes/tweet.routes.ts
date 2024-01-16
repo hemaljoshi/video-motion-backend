@@ -6,8 +6,11 @@ import {
   getUserTweet,
   updateTweet,
 } from "../controllers/tweet.controller";
+import { verifyJwtToken } from "../middlewares/auth.middleware";
 
 const router = Router();
+
+router.use(verifyJwtToken);
 
 router.route("/").get(getAllTweet).post(createTweet);
 

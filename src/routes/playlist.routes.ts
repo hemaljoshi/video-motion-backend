@@ -8,8 +8,11 @@ import {
   removeVideoFromPlaylist,
   updatePlaylist,
 } from "../controllers/playlist.controller";
+import { verifyJwtToken } from "../middlewares/auth.middleware";
 
 const router = Router();
+
+router.use(verifyJwtToken);
 
 router.route("/").post(createPlaylist).get(getAllPlaylists);
 

@@ -13,6 +13,7 @@ import {
   updateCoverImage,
 } from "../controllers/user.controller";
 import { upload } from "../middlewares/multer.middleware";
+import { verifyJwtToken } from "../middlewares/auth.middleware";
 
 const router = Router();
 
@@ -34,23 +35,25 @@ router.route("/login").post(loginUser);
 
 router.route("/refresh-token").post(refreshAccessToken);
 
-router.route("/logout").post(logoutUser);
+router.route("/logout").post(verifyJwtToken, logoutUser);
 
-router.route("/change-password").post(changeCurrentPassword);
+router.route("/change-password").post(verifyJwtToken, changeCurrentPassword);
 
-router.route("/current-user").get(getCurrentUser);
+router.route("/current-user").get(verifyJwtToken, getCurrentUser);
 
-router.route("/update-account").patch(updateAccountDetails);
+router.route("/update-account").patch(verifyJwtToken, updateAccountDetails);
 
-router.route("/update-avatar").patch(upload.single("avatar"), updateAvatar);
+router
+  .route("/update-avatar")
+  .patch(verifyJwtToken, upload.single("avatar"), updateAvatar);
 
 router
   .route("/update-coverimage")
-  .patch(upload.single("coverImage"), updateCoverImage);
+  .patch(verifyJwtToken, upload.single("coverImage"), updateCoverImage);
 
-router.route("/c/:username").get(getUserChannelProfile);
+router.route("/c/:username").get(verifyJwtToken, getUserChannelProfile);
 
-router.route("/history").get(getWatchHistory);
+router.route("/history").get(verifyJwtToken, getWatchHistory);
 
 // TODO: add route for forgot password
 // TODO: add route for reset password

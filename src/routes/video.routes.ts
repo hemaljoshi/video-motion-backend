@@ -11,7 +11,10 @@ import {
   updateVideoDetails,
 } from "../controllers/video.controller";
 import { upload } from "../middlewares/multer.middleware";
+import { verifyJwtToken } from "../middlewares/auth.middleware";
 const router = Router();
+
+router.use(verifyJwtToken);
 
 router.route("/videos")
   .post(

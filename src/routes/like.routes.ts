@@ -8,8 +8,11 @@ import {
   toggleTweetLike,
   toggleVideoLike,
 } from "../controllers/like.controller";
+import { verifyJwtToken } from "../middlewares/auth.middleware";
 
 const router = Router();
+
+router.use(verifyJwtToken);
 
 router.route("/toggle/c/:commentId").post(toggleCommentLike);
 
