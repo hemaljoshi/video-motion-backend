@@ -17,10 +17,10 @@ const SWAGGER_OPTIONS = {
     },
     servers: [
       {
-        url: "http://localhost:4000/api/v1",
+        url: "http://localhost:4000",
       },
       {
-        url: "https://nodejs-production-5890.up.railway.app/api/v1",
+        url: "https://nodejs-production-5890.up.railway.app",
       },
     ],
   },

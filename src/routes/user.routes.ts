@@ -17,6 +17,69 @@ import { verifyJwtToken } from "../middlewares/auth.middleware";
 
 const router = Router();
 
+/**
+ * @swagger
+ * /api/v1/users/register:
+ *   post:
+ *     tags:
+ *       - Users
+ *     summary: Register user
+ *     description: Register user
+ *     requestBody:
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               fullname:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               username:
+ *                 type: string
+ *               avatar:
+ *                 type: string
+ *                 format: binary
+ *               coverImage:
+ *                 type: string
+ *                 format: binary
+ *             required:
+ *               - fullname
+ *               - email
+ *               - password
+ *               - username
+ *               - avatar
+ *     responses:
+ *       201:
+ *         description: User created successfully
+ *         content:
+ *           application/json:
+ *             example:
+ *               statusCode: 200
+ *               data: 
+ *                 # Placeholder values
+ *                 _id: "{{randomObjectId}}"
+ *                 username: "{{username}}"
+ *                 email: "{{email}}"
+ *                 fullname: "{{fullname}}"
+ *                 avatar: "{{avatarUrl}}"
+ *                 coverImage: "{{coverImageUrl}}"
+ *                 watchHistory: []
+ *                 createdAt: "{{currentDateTime}}"
+ *                 updatedAt: "{{currentDateTime}}"
+ *                 __v: 0
+ *               message: "User created successfully"
+ *               success: true
+ *       400:
+ *         description: All fields are required
+ *       409:
+ *         description: Username or email already exists
+ *       500:
+ *         description: Error while creating user
+ */
+
 router.route("/register").post(
   upload.fields([
     {
