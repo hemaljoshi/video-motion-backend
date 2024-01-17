@@ -38,6 +38,10 @@ const SWAGGER_OPTIONS = {
         name: "Users",
         description: "User management",
       },
+      {
+        name: "Videos",
+        description: "Video management",
+      }
     ],
   },
   apis: ["./src/routes/*.ts"],

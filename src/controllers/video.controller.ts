@@ -43,6 +43,10 @@ const publishVideo = asyncHandler(async (req, res) => {
     owner: req.user._id,
   });
 
+  if (!video) {
+    return res.status(500).json(new ApiError(500, "Error while publishing video"));
+  }
+
   return res
     .status(201)
     .json(new ApiResponse(201, video, "Video uploaded successfully"));
@@ -62,7 +66,9 @@ const increaseViewCount = asyncHandler(async (req, res) => {
   );
 
   if (!video) {
-    return res.status(404).json(new ApiError(404, "Video not found"));
+    return res
+      .status(404)
+      .json(new ApiError(404, "Error while incrementing view count"));
   }
 
   return res
@@ -72,7 +78,7 @@ const increaseViewCount = asyncHandler(async (req, res) => {
 
 const addVideoToWatchHistory = asyncHandler(async (req, res) => {
   const videoID = req.params.videoId;
-  const { position } = req.body;
+  const position = req.query.position;
 
   if (!videoID) {
     return res.status(400).json(new ApiError(400, "Video id is required"));
@@ -300,7 +306,7 @@ const updateVideoDetails = asyncHandler(async (req, res) => {
   if (!updatedVideo) {
     return res
       .status(500)
-      .json(new ApiError(500, "Error while updating video"));
+      .json(new ApiError(500, "Error while updating video details"));
   }
 
   return res
