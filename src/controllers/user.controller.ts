@@ -136,11 +136,15 @@ const loginUser = asyncHandler(async (req, res) => {
 const logoutUser = asyncHandler(async (req, res) => {
   const userID = req.user._id;
 
-  await User.findByIdAndUpdate(
+  const user = await User.findByIdAndUpdate(
     userID,
     { $unset: { refreshToken: 1 } },
     { new: true }
   );
+
+  if (!user) {
+    return res.status(500).json(new ApiError(500, "Error while logging out"));
+  }
 
   return res
     .status(200)
@@ -421,51 +425,59 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
 });
 
 const getWatchHistory = asyncHandler(async (req, res) => {
-  const user = await User.aggregate([
-    {
-      $match: {
-        _id: new mongoose.Types.ObjectId(req.user._id),
-      },
-    },
-    {
-      $lookup: {
-        from: "videos",
-        localField: "watchHistory",
-        foreignField: "_id",
-        as: "watchHistory",
-        pipeline: [
-          {
-            $lookup: {
-              from: "users",
-              localField: "owner",
-              foreignField: "_id",
-              as: "owner",
-              pipeline: [
-                {
-                  $project: {
-                    fullname: 1,
-                    username: 1,
-                    avatar: 1,
-                  },
-                },
-              ],
-            },
-          },
-          {
-            $addFields: {
-              owner: {
-                $first: "$owner",
-              },
-            },
-          },
-        ],
-      },
-    },
-  ]);
+ const user = await User.aggregate([
+   {
+     $match: {
+       _id: new mongoose.Types.ObjectId(req.user._id),
+     },
+   },
+   {
+     $lookup: {
+       from: "videos",
+       localField: "watchHistory.video",
+       foreignField: "_id",
+       as: "watchHistoryArr",
+     },
+   },
+   {
+     $project: {
+       watchHistory: {
+         $map: {
+           input: "$watchHistory",
+           as: "wh",
+           in: {
+             video: {
+               $arrayElemAt: [
+                 {
+                   $filter: {
+                     input: "$watchHistoryArr",
+                     as: "videoItem",
+                     cond: {
+                       $eq: ["$$videoItem._id", "$$wh.video"],
+                     },
+                   },
+                 },
+                 0,
+               ],
+             },
+             position: "$$wh.position",
+             timestamp: "$$wh.timestamp",
+             _id: "$$wh._id",
+           },
+         },
+       },
+     },
+   },
+ ]);
+  
+  if (!user?.length) {
+    return res.status(404).json(new ApiError(404, "Error while fetching watch history"));
+  }
 
-  return res
-    .status(200)
-    .json(new ApiResponse(200, user[0], "Watch history fetched successfully"));
+ // Add any additional logic or response handling as needed
+ return res
+   .status(200)
+   .json(new ApiResponse(200, user[0], "Watch history fetched successfully"));
 });
 
 export {

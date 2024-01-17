@@ -72,20 +72,14 @@ const increaseViewCount = asyncHandler(async (req, res) => {
 
 const addVideoToWatchHistory = asyncHandler(async (req, res) => {
   const videoID = req.params.videoId;
-  const { duration } = req.body;
+  const { position } = req.body;
 
   if (!videoID) {
     return res.status(400).json(new ApiError(400, "Video id is required"));
   }
 
-  if (!duration) {
-    return res.status(400).json(new ApiError(400, "Duration is required"));
-  }
-
-  if (req.user?.watchHistory.includes(videoID)) {
-    return res
-      .status(200)
-      .json(new ApiError(200, "Video already in watch history"));
+  if (!position) {
+    return res.status(400).json(new ApiError(400, "Position is required"));
   }
 
   const video = await Video.findById(videoID);
@@ -94,24 +88,34 @@ const addVideoToWatchHistory = asyncHandler(async (req, res) => {
     return res.status(404).json(new ApiError(404, "Video not found"));
   }
 
-  const user = await User.findOneAndUpdate(
-    req.user?._id,
+  let user = await User.findOneAndUpdate(
     {
-      $addToSet: {
-        watchHistory: {
-          video: videoID,
-          duration: duration,
-          timestamp: Date.now(),
-        },
+      _id: req.user?._id,
+      "watchHistory.video": videoID,
+    },
+    {
+      $set: {
+        "watchHistory.$.position": position,
+        "watchHistory.$.timestamp": Date.now(),
       },
     },
     { new: true }
   ).select("-password -refreshToken");
 
   if (!user) {
-    return res
-      .status(500)
-      .json(new ApiError(500, "Error while updating watch history"));
+    user = await User.findByIdAndUpdate(
+      req.user?._id,
+      {
+        $push: {
+          watchHistory: {
+            video: videoID,
+            position: position,
+            timestamp: Date.now(),
+          },
+        },
+      },
+      { new: true }
+    );
   }
 
   return res

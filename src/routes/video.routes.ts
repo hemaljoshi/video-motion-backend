@@ -16,7 +16,7 @@ const router = Router();
 
 router.use(verifyJwtToken);
 
-router.route("/videos")
+router.route("/")
   .post(
     upload.fields([
       {

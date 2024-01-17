@@ -1277,6 +1277,11 @@ swagger-parser@^10.0.3:
   dependencies:
     "@apidevtools/swagger-parser" "10.0.3"
 
+swagger-themes@^1.2.30:
+  version "1.2.30"
+  resolved "https://registry.npmjs.org/swagger-themes/-/swagger-themes-1.2.30.tgz#4c9cffc8e38ee40309998fc954c562f976daae94"
+  integrity sha512-OOk1gMfu50knSui4ncnOGtQEw8snOkMCLiOWVLqO0IT1SNYJC83MBWtRwMWSYmaC+m51XdNBlZ030T4t6viNvg==
+
 swagger-ui-dist@>=5.0.0:
   version "5.11.0"
   resolved "https://registry.npmjs.org/swagger-ui-dist/-/swagger-ui-dist-5.11.0.tgz#9bcfd75278b1fa9c36fe52f206f8fc611470547c"

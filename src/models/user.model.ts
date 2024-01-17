@@ -14,6 +14,7 @@ interface IUser {
       video: string;
       duration: number;
       timestamp: Date;
+      position: number;
     }
   ];
   refreshToken: string;
@@ -48,6 +49,7 @@ const userSchema = new mongoose.Schema<IUserDocument>(
     watchHistory: [{ 
       video: { type: mongoose.Schema.Types.ObjectId, ref: "Video" },
       duration: { type: Number },
+      position: { type: Number, default: 0 }, 
       timestamp: { type: Date, default: Date.now },
     }],
     password: { type: String, required: [true, "Password is required"] },
