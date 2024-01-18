@@ -146,7 +146,7 @@ const getVideoLikesCount = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         { count: likesCount },
-        "Video likes count fetched successfully"
+        "Successfully retrieved video likes count."
       )
     );
 });
@@ -172,7 +172,7 @@ const getTweetLikesCount = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         { count: likesCount },
-        "Tweet likes count fetched successfully"
+        "Successfully retrieved tweet likes count."
       )
     );
 });
@@ -198,7 +198,7 @@ const getCommentLikesCount = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         { count: likesCount },
-        "Comment likes count fetched successfully"
+        "Successfully retrieved comment likes count."
       )
     );
 });
@@ -213,14 +213,14 @@ const getLikedVideos = asyncHandler(async (req, res) => {
     return res
       .status(500)
       .json(
-        new ApiError(500, "Something went wrong while getting liked videos")
+        new ApiError(500, "Something went wrong while retrieving liked videos")
       );
   }
 
   return res
     .status(200)
     .json(
-      new ApiResponse(200, likedVideos, "Liked videos fetched successfully")
+      new ApiResponse(200, likedVideos, "Successfully retrieved liked videos.")
     );
 });
 

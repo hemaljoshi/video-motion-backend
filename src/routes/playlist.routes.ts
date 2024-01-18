@@ -19,7 +19,7 @@ router.use(verifyJwtToken);
  * /api/v1/playlist:
  *   post:
  *     tags:
- *       - Playlist
+ *       - Playlists
  *     summary: Create a new playlist
  *     description: Create a new playlist
  *     requestBody:
@@ -59,7 +59,7 @@ router.use(verifyJwtToken);
  *         description: Something went wrong while creating playlist
  *   get:
  *     tags:
- *       - Playlist
+ *       - Playlists
  *     summary: Get all playlists
  *     description: Get all playlists
  *     responses:
@@ -93,7 +93,7 @@ router.route("/").post(createPlaylist).get(getAllPlaylists);
  * /api/v1/playlist/{playlistId}:
  *   get:
  *     tags:
- *       - Playlist
+ *       - Playlists
  *     summary: Get playlist by id
  *     description: Get playlist by id
  *     parameters:
@@ -127,7 +127,7 @@ router.route("/").post(createPlaylist).get(getAllPlaylists);
  *         description: Playlist not found
  *   patch:
  *     tags:
- *       - Playlist
+ *       - Playlists
  *     summary: Update playlist
  *     description: Update playlist
  *     parameters:
@@ -176,7 +176,7 @@ router.route("/").post(createPlaylist).get(getAllPlaylists);
  *         description: Playlist not found
  *   delete:
  *     tags:
- *       - Playlist
+ *       - Playlists
  *     summary: Delete playlist
  *     description: Delete playlist
  *     parameters:
@@ -213,7 +213,7 @@ router
  * /api/v1/playlist/add:
  *   patch:
  *     tags:
- *       - Playlist
+ *       - Playlists
  *     summary: Add video to playlist
  *     description: Add video to playlist
  *     requestBody:
@@ -266,7 +266,7 @@ router.route("/add").patch(addVideoToPlaylist);
  * /api/v1/playlist/remove:
  *   patch:
  *     tags:
- *       - Playlist
+ *       - Playlists
  *     summary: Remove video from playlist
  *     description: Remove video from playlist
  *     requestBody:

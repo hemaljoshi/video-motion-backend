@@ -43,13 +43,33 @@ const SWAGGER_OPTIONS = {
         description: "Video management",
       },
       {
-        name: "Playlist",
-        description: "Playlist management",
+        name: "Playlists",
+        description: "Playlists management",
       },
       {
         name: "Comments",
         description: "Comment management",
       },
+      {
+        name: "Tweets",
+        description: "Tweet management",
+      },
+      {
+        name: "Likes",
+        description: "Like management",
+      },
+      {
+        name: "Dashboard",
+        description: "Dashboard management",
+      },
+      {
+        name: "Healthcheck",
+        description: "Healthcheck management",
+      },
+      {
+        name: "Subscription",
+        description: "Subscription management",
+      }
     ],
   },
   apis: ["./src/routes/*.ts"],
