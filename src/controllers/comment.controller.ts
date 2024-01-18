@@ -6,7 +6,7 @@ import asyncHandler from "../utils/asyncHandler";
 import { Video } from "../models/video.model";
 
 const addComment = asyncHandler(async (req, res) => {
-  const videoId = req.params.id
+  const videoId = req.params.videoId;
   const { content } = req.body;
 
   if (!content || !videoId) {
@@ -78,7 +78,7 @@ const updateComment = asyncHandler(async (req, res) => {
 
 const getComments = asyncHandler(async (req, res) => {
   try {
-    const videoId = req.params.id;
+    const videoId = req.params.videoId;
     const { page = 1, limit = 10 } = req.query;
 
     if (!videoId) {

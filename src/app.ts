@@ -44,7 +44,11 @@ const SWAGGER_OPTIONS = {
       },
       {
         name: "Playlist",
-        description: 'Playlist management'
+        description: "Playlist management",
+      },
+      {
+        name: "Comments",
+        description: "Comment management",
       },
     ],
   },
