@@ -35,6 +35,10 @@ const SWAGGER_OPTIONS = {
     ],
     tags: [
       {
+        name: "Healthcheck",
+        description: "Healthcheck management",
+      },
+      {
         name: "Users",
         description: "User management",
       },
@@ -63,13 +67,9 @@ const SWAGGER_OPTIONS = {
         description: "Dashboard management",
       },
       {
-        name: "Healthcheck",
-        description: "Healthcheck management",
-      },
-      {
         name: "Subscription",
         description: "Subscription management",
-      }
+      },
     ],
   },
   apis: ["./src/routes/*.ts"],
@@ -99,6 +99,7 @@ app.use("/api/v1/api-docs", swaggerUi.serve, swaggerUi.setup(specs, options));
 
 
 // Routes
+app.use("/api/v1/healthcheck", healthRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/videos", videoRouter);
 app.use("/api/v1/playlist", playlistRouter);
@@ -106,5 +107,4 @@ app.use("/api/v1/comments", commentRouter);
 app.use("/api/v1/tweets", tweetRouter);
 app.use("/api/v1/like", likeRouter);
 app.use("/api/v1/dashboard", dashboardRouter);
-app.use("/api/v1/healthcheck", healthRouter);
 app.use("/api/v1/subscription", subscriptionRouter);

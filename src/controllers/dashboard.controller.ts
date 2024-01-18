@@ -17,7 +17,19 @@ const getChannelStats = asyncHandler(async (req, res) => {
   const channel = await Subscription.findOne({ channel: channelId });
 
   if (!channel)
-    return res.status(404).json(new ApiError(404, "Channel not found"));
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {
+          totalVideos: 0,
+          totalSubscribers: 0,
+          totalLikes: 0,
+          totalViews: 0,
+          totalComments: 0,
+        },
+        "Channel stats fetched successfully"
+      )
+    );
 
   let video = await Video.find({ owner: channelId }).select("_id");
 
@@ -45,6 +57,10 @@ const getChannelStats = asyncHandler(async (req, res) => {
     },
   ]);
 
+  if (!totalViews[0]) { 
+    totalViews[0] = { views: 0 };
+  }
+
   const totalComments = await Video.aggregate([
     {
       $match: {
@@ -58,6 +74,10 @@ const getChannelStats = asyncHandler(async (req, res) => {
       },
     },
   ]);
+
+  if (!totalComments[0]) {
+    totalComments[0] = { comments: 0 };
+  }
 
   res.status(200).json(
     new ApiResponse(

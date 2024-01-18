@@ -43,7 +43,11 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
     .populate("subscriber", "_id fullname username avatar")
 
   if (subscribers.length === 0) {
-    return res.status(404).json(new ApiError(404, "Subscribers not found"));
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(200, [], "Subscribers fetched successfully")
+      );
   }
 
   return res.status(200).json(new ApiResponse(200, subscribers, "Subscribers fetched successfully"));
