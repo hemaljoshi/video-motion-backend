@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a ``Video Motion`` backend project that covers multiple functionalities 
+This is a ``Video Motion Backend`` project that covers multiple functionalities 
 and also combines the tweet functionality from twitter into it. Find more about his project in the documentaion below.
 
 ## Important links
