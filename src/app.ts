@@ -41,7 +41,11 @@ const SWAGGER_OPTIONS = {
       {
         name: "Videos",
         description: "Video management",
-      }
+      },
+      {
+        name: "Playlist",
+        description: 'Playlist management'
+      },
     ],
   },
   apis: ["./src/routes/*.ts"],

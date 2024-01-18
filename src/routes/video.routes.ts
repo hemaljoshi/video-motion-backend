@@ -74,11 +74,6 @@ router.use(verifyJwtToken);
  *         description: Error while uploading thumbnail on cloudinary
  *       500:
  *         description: Error while publishing video
- */
-
-/**
- * @swagger
- * /api/v1/videos:
  *   get:
  *     tags:
  *       - Videos
@@ -275,36 +270,6 @@ router
 /**
  * @swagger
  * /api/v1/videos/{videoId}:
- *   delete:
- *     tags:
- *       - Videos
- *     summary: Delete video
- *     description: Delete video
- *     parameters:
- *       - in: path
- *         name: videoId
- *         schema:
- *           type: string
- *         required: true
- *     responses:
- *       200:
- *         description: Video deleted successfully
- *         content:
- *           application/json:
- *             example:
- *               statusCode: 200
- *               data: {}
- *               message: Video deleted successfully
- *               success: true
- *       400:
- *         description: Video id is required
- *       500:
- *         description: Error while deleting video
- */
-
-/**
- * @swagger
- * /api/v1/videos/{videoId}:
  *   get:
  *     tags:
  *       - Videos
@@ -342,11 +307,6 @@ router
  *         description: Video id is required
  *       404:
  *         description: Video not found
- */
-
-/**
- * @swagger
- * /api/v1/videos/{videoId}:
  *   patch:
  *     tags:
  *       - Videos
@@ -405,6 +365,31 @@ router
  *         description: Error while uploading thumbnail on cloudinary
  *       500:
  *         description: Error while updating video details
+ *   delete:
+ *     tags:
+ *       - Videos
+ *     summary: Delete video
+ *     description: Delete video
+ *     parameters:
+ *       - in: path
+ *         name: videoId
+ *         schema:
+ *           type: string
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Video deleted successfully
+ *         content:
+ *           application/json:
+ *             example:
+ *               statusCode: 200
+ *               data: {}
+ *               message: Video deleted successfully
+ *               success: true
+ *       400:
+ *         description: Video id is required
+ *       500:
+ *         description: Error while deleting video
  */
 
 router

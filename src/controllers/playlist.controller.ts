@@ -9,7 +9,7 @@ const createPlaylist = asyncHandler(async (req, res) => {
   const { name, description } = req.body;
 
   if (!name || name.trim().length === 0) {
-    return res.status(400).json(new ApiError(400, "name is required"));
+    return res.status(400).json(new ApiError(400, "Name is required"));
   }
 
   const playlist = await Playlist.create({
@@ -33,7 +33,7 @@ const addVideoToPlaylist = asyncHandler(async (req, res) => {
   const { playlistId, videos } = req.body;
 
   if (!playlistId) {
-    return res.status(400).json(new ApiError(400, "playlistId is required"));
+    return res.status(400).json(new ApiError(400, "PlaylistId is required"));
   }
 
   if (videos.length === 0) {
@@ -63,7 +63,7 @@ const addVideoToPlaylist = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponse(200, playlist, "Video added to playlist successfully")
+      new ApiResponse(200, playlist, "Videos added to playlist successfully")
     );
 });
 
@@ -71,13 +71,21 @@ const removeVideoFromPlaylist = asyncHandler(async (req, res) => {
   const { playlistId, videos } = req.body;
 
   if (!playlistId) {
-    return res.status(400).json(new ApiError(400, "playlistId is required"));
+    return res.status(400).json(new ApiError(400, "PlaylistId is required"));
   }
 
   if (videos.length === 0) {
     return res
       .status(400)
       .json(new ApiError(400, "At least one video is required"));
+  }
+
+  let Videos = await Video.find({ _id: { $in: videos } });
+
+  if (!Videos) {
+    return res
+      .status(404)
+      .json(new ApiError(404, "Video you are trying to remove is not found"));
   }
 
   const playlist = await Playlist.findByIdAndUpdate(
@@ -92,7 +100,9 @@ const removeVideoFromPlaylist = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, playlist, "Playlist updated successfully"));
+    .json(
+      new ApiResponse(200, playlist, "Video removed from playlist successfully")
+    );
 });
 
 const deletePlaylist = asyncHandler(async (req, res) => {
@@ -121,8 +131,8 @@ const updatePlaylist = asyncHandler(async (req, res) => {
     return res.status(400).json(new ApiError(400, "playlistId is required"));
   }
 
-  if (!name || name.trim().length === 0) {
-    return res.status(400).json(new ApiError(400, "name is required"));
+  if ((!name || name.trim().length === 0) || (!description || description.trim().length === 0)) { 
+    return res.status(400).json(new ApiError(400, "Name and description are required"));
   }
 
   const playlist = await Playlist.findByIdAndUpdate(
