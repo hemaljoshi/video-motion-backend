@@ -3,7 +3,7 @@ import ApiError from "../utils/ApiError";
 import asyncHandler from "../utils/asyncHandler";
 import jwt from "jsonwebtoken";
 
-export const verifyJwtToken = asyncHandler(async (req, res, next) => {
+export const verifyJwtToken = asyncHandler(async (req : any, res: any, next: any) => {
   try {
     const token =
       req.cookies?.accessToken ||
@@ -17,6 +17,8 @@ export const verifyJwtToken = asyncHandler(async (req, res, next) => {
       token,
       process.env.ACCESS_TOKEN_SECRET
     );
+
+    // @ts-ignore
     const user = await User.findById(decodedToken?._id).select(
       "-password -refreshToken"
     );

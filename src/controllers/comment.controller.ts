@@ -5,7 +5,7 @@ import ApiResponse from "../utils/ApiResponse";
 import asyncHandler from "../utils/asyncHandler";
 import { Video } from "../models/video.model";
 
-const addComment = asyncHandler(async (req, res) => {
+const addComment = asyncHandler(async (req : any, res: any) => {
   const videoId = req.params.videoId;
   const { content } = req.body;
 
@@ -35,7 +35,7 @@ const addComment = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, newComment, "Comment added successfully"));
 });
 
-const deleteComment = asyncHandler(async (req, res) => {
+const deleteComment = asyncHandler(async (req : any, res: any) => {
   const commentId = req.params.commentId;
 
   if (!commentId) {
@@ -53,7 +53,7 @@ const deleteComment = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Comment deleted successfully"));
 });
 
-const updateComment = asyncHandler(async (req, res) => {
+const updateComment = asyncHandler(async (req : any, res: any) => {
   const commentId = req.params.commentId;
   const { content } = req.body;
 
@@ -76,7 +76,7 @@ const updateComment = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, updateComment, "Comment updated successfully"));
 });
 
-const getComments = asyncHandler(async (req, res) => {
+const getComments = asyncHandler(async (req : any, res: any) => {
   try {
     const videoId = req.params.videoId;
     const { page = 1, limit = 10 } = req.query;

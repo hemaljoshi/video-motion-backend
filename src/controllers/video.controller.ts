@@ -5,7 +5,7 @@ import ApiResponse from "../utils/ApiResponse";
 import asyncHandler from "../utils/asyncHandler";
 import { uploadOnCloudinary } from "../utils/cloudinary";
 
-const publishVideo = asyncHandler(async (req, res) => {
+const publishVideo = asyncHandler(async (req : any, res: any) => {
   const { title, description } = req.body;
 
   if ([title, description].some((field) => field?.trim() === "")) {
@@ -52,7 +52,7 @@ const publishVideo = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, video, "Video uploaded successfully"));
 });
 
-const increaseViewCount = asyncHandler(async (req, res) => {
+const increaseViewCount = asyncHandler(async (req : any, res: any) => {
   const videoID = req.params.videoId;
 
   if (!videoID) {
@@ -76,7 +76,7 @@ const increaseViewCount = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, video, "View count incremented successfully"));
 });
 
-const addVideoToWatchHistory = asyncHandler(async (req, res) => {
+const addVideoToWatchHistory = asyncHandler(async (req : any, res: any) => {
   const videoID = req.params.videoId;
   const position = req.query.position;
 
@@ -129,7 +129,7 @@ const addVideoToWatchHistory = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Video added to watch history"));
 });
 
-const deleteVideoFromWatchHistory = asyncHandler(async (req, res) => {
+const deleteVideoFromWatchHistory = asyncHandler(async (req : any, res: any) => {
   const videoId = req.params.videoId;
 
   if (!videoId) {
@@ -161,7 +161,7 @@ const deleteVideoFromWatchHistory = asyncHandler(async (req, res) => {
     );
 });
 
-const deleteVideo = asyncHandler(async (req, res) => {
+const deleteVideo = asyncHandler(async (req : any, res: any) => {
   const videoId = req.params.videoId;
 
   if (!videoId) {
@@ -184,7 +184,7 @@ const deleteVideo = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Video deleted successfully"));
 });
 
-const getAllVideos = asyncHandler(async (req, res) => {
+const getAllVideos = asyncHandler(async (req : any, res: any) => {
   const { page = 1, limit = 10 } = req.query; // Retrieve pagination parameters
 
   const aggregate = Video.aggregate();
@@ -213,7 +213,7 @@ const getAllVideos = asyncHandler(async (req, res) => {
   );
 });
 
-const getVideoById = asyncHandler(async (req, res) => {
+const getVideoById = asyncHandler(async (req : any, res: any) => {
   const videoId = req.params.videoId;
 
   if (!videoId) {
@@ -234,7 +234,7 @@ const getVideoById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, video, "Video fetched successfully"));
 });
 
-const togglePublishStatus = asyncHandler(async (req, res) => {
+const togglePublishStatus = asyncHandler(async (req : any, res: any) => {
   const videoId = req.params.videoId;
 
   if (!videoId) {
@@ -264,7 +264,7 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, updatedVideo, "Video status updated"));
 });
 
-const updateVideoDetails = asyncHandler(async (req, res) => {
+const updateVideoDetails = asyncHandler(async (req : any, res: any) => {
   const { videoId } = req.params;
   const { title, description } = req.body;
 

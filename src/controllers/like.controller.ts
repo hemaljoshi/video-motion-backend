@@ -6,7 +6,7 @@ import ApiError from "../utils/ApiError";
 import ApiResponse from "../utils/ApiResponse";
 import asyncHandler from "../utils/asyncHandler";
 
-const toggleCommentLike = asyncHandler(async (req, res) => {
+const toggleCommentLike = asyncHandler(async (req : any, res: any) => {
   const commentId = req.params.commentId;
   const userId = req.user._id;
 
@@ -47,7 +47,7 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
   return res.status(201).json(new ApiResponse(201, like, message));
 });
 
-const toggleTweetLike = asyncHandler(async (req, res) => {
+const toggleTweetLike = asyncHandler(async (req : any, res: any) => {
   const tweetId = req.params.tweetId;
   const userId = req.user._id;
 
@@ -85,7 +85,7 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
   return res.status(201).json(new ApiResponse(201, like, message));
 });
 
-const toggleVideoLike = asyncHandler(async (req, res) => {
+const toggleVideoLike = asyncHandler(async (req : any, res: any) => {
   const videoId = req.params.videoId;
   const userId = req.user._id;
 
@@ -125,7 +125,7 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, like, message));
 });
 
-const getVideoLikesCount = asyncHandler(async (req, res) => {
+const getVideoLikesCount = asyncHandler(async (req : any, res: any) => {
   const videoId = req.params.videoId;
 
   if (!videoId) {
@@ -151,7 +151,7 @@ const getVideoLikesCount = asyncHandler(async (req, res) => {
     );
 });
 
-const getTweetLikesCount = asyncHandler(async (req, res) => {
+const getTweetLikesCount = asyncHandler(async (req : any, res: any) => {
   const tweetId = req.params.tweetId;
 
   if (!tweetId) {
@@ -177,7 +177,7 @@ const getTweetLikesCount = asyncHandler(async (req, res) => {
     );
 });
 
-const getCommentLikesCount = asyncHandler(async (req, res) => {
+const getCommentLikesCount = asyncHandler(async (req : any, res: any) => {
   const commentId = req.params.commentId;
 
   if (!commentId) {
@@ -203,7 +203,7 @@ const getCommentLikesCount = asyncHandler(async (req, res) => {
     );
 });
 
-const getLikedVideos = asyncHandler(async (req, res) => {
+const getLikedVideos = asyncHandler(async (req : any, res: any) => {
   const userId = req.user._id;
 
   const likedVideos = await Like.find({ likedBy: userId, video: { $ne: null } }) // $ne: null means not equal to null

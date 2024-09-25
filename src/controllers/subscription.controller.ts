@@ -3,7 +3,7 @@ import ApiError from "../utils/ApiError";
 import ApiResponse from "../utils/ApiResponse";
 import asyncHandler from "../utils/asyncHandler";
 
-const toggleSubscription = asyncHandler(async (req, res) => {
+const toggleSubscription = asyncHandler(async (req : any, res: any) => {
   const { channelId } = req.params;
 
   const existingSubscription = await Subscription.findOne({
@@ -34,7 +34,7 @@ const toggleSubscription = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, channel, message));
 });
 
-const getUserChannelSubscribers = asyncHandler(async (req, res) => {
+const getUserChannelSubscribers = asyncHandler(async (req : any, res: any) => {
   const { channelId } = req.params;
 
   const subscribers = await Subscription.find({
@@ -53,7 +53,7 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, subscribers, "Subscribers fetched successfully"));
 });
 
-const getSubscribedChannels = asyncHandler(async (req, res) => {
+const getSubscribedChannels = asyncHandler(async (req : any, res: any) => {
   let { subscriberId } = req.params;
 
   if (!subscriberId) {

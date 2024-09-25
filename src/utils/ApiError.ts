@@ -4,7 +4,7 @@ class ApiError extends Error {
   constructor(
     public statusCode: number,
     public message: string = "Something went wrong",
-    public errors = [],
+    public errors = [] as any[],
     public stack: string = ""
   ) {
     super(message);
