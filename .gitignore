@@ -84,7 +84,7 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
-dist
+api
 
 # Gatsby files
 .cache/
@@ -93,7 +93,7 @@ dist
 # public
 
 # vuepress build output
-.vuepress/dist
+.vuepress/api
 
 # Serverless directories
 .serverless/
@@ -118,3 +118,73 @@ dist
 .pnp.*
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Node
+dist/app.js
+dist/app.js.map
+dist/constant.js
+dist/constant.js.map
+dist/index.js
+dist/index.js.map
+dist/controllers/comment.controller.js
+dist/controllers/comment.controller.js.map
+dist/controllers/dashboard.controller.js
+dist/controllers/dashboard.controller.js.map
+dist/controllers/healthcheck.controller.js
+dist/controllers/healthcheck.controller.js.map
+dist/controllers/like.controller.js
+dist/controllers/like.controller.js.map
+dist/controllers/playlist.controller.js
+dist/controllers/playlist.controller.js.map
+dist/controllers/subscription.controller.js
+dist/controllers/subscription.controller.js.map
+dist/controllers/tweet.controller.js
+dist/controllers/tweet.controller.js.map
+dist/controllers/user.controller.js
+dist/controllers/user.controller.js.map
+dist/controllers/video.controller.js
+dist/controllers/video.controller.js.map
+dist/db/index.js
+dist/db/index.js.map
+dist/middlewares/auth.middleware.js
+dist/middlewares/auth.middleware.js.map
+dist/middlewares/multer.middleware.js
+dist/middlewares/multer.middleware.js.map
+dist/models/comment.model.js
+dist/models/comment.model.js.map
+dist/models/like.model.js
+dist/models/like.model.js.map
+dist/models/playlist.model.js
+dist/models/playlist.model.js.map
+dist/models/subscription.model.js
+dist/models/subscription.model.js.map
+dist/models/tweet.model.js
+dist/models/tweet.model.js.map
+dist/models/user.model.js
+dist/models/user.model.js.map
+dist/models/video.model.js
+dist/models/video.model.js.map
+dist/routes/comment.routes.js
+dist/routes/comment.routes.js.map
+dist/routes/dashboard.routes.js
+dist/routes/dashboard.routes.js.map
+dist/routes/healthcheck.routes.js
+dist/routes/healthcheck.routes.js.map
+dist/routes/like.routes.js
+dist/routes/like.routes.js.map
+dist/routes/playlist.routes.js
+dist/routes/playlist.routes.js.map
+dist/routes/subscription.routes.js
+dist/routes/subscription.routes.js.map
+dist/routes/tweet.routes.js
+dist/routes/tweet.routes.js.map
+dist/routes/user.routes.js
+dist/routes/user.routes.js.map
+dist/routes/video.routes.js
+dist/routes/video.routes.js.map
+dist/utils/ApiError.js
+dist/utils/ApiError.js.map
+dist/utils/ApiResponse.js
+dist/utils/ApiResponse.js.map
+dist/utils/asyncHandler.js
+dist/utils/asyncHandler.js.map
+dist/utils/cloudinary.js
+dist/utils/cloudinary.js.map
